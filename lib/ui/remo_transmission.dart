@@ -238,7 +238,7 @@ class _DataChartState extends State<_DataChart> {
     jsonFile = File('$path/$tmpFileName.json');
     csvFile = File('$path/$tmpFileName.csv');
     // Overwriting an empty string to make sure the JSON file has no content.
-    jsonFile.writeAsString('');
+    jsonFile.writeAsString('{"sensorsData":[\n');//json object with List<remoData> in sensorData
     // Overwriting a header as string to make sure the csv file only contains the header itself.
     csvFile.writeAsString(
         'EMG,,,,,,,,Acceleration,,,AngularVelocity,,,MagneticField,,\nCh1,Ch2,Ch3,Ch4,Ch5,Ch6,Ch7,Ch8,X,Y,Z,X,Y,Z,X,Y,Z\n');
@@ -259,7 +259,7 @@ class _DataChartState extends State<_DataChart> {
 
             // Appending received Remo data to the JSON file.
             jsonFile.writeAsString(
-              remoData.toJson().toString(),
+              remoData.toJson().toString()+",\n",
               mode: FileMode.append,
             );
 
@@ -355,6 +355,7 @@ class _SaveState extends State<_SavePrompt> {
   });
   @override
   Widget build(BuildContext context) {
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -392,11 +393,16 @@ class _SaveState extends State<_SavePrompt> {
               style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).accentColor),
               onPressed: () async {
+
                 final String tmpFilePath = tmpDirectory.path + '/$tmpFileName';
 
                 File tmpJsonFile = File(tmpFilePath + '.json');
                 File tmpCsvFile = File(tmpFilePath + '.csv');
-
+                ///string to end file
+                tmpJsonFile.writeAsString(
+                  '{"emg": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],"acceleration": [0.0,0.0,0.0],"angularVelocity": [0.0,0.0,0.0],"magneticField": [0.0,0.0,0.0]}]}',
+                  mode: FileMode.append,
+                );
                 await tmpJsonFile.delete();
                 await tmpCsvFile.delete();
 
