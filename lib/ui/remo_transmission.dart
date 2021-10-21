@@ -188,7 +188,7 @@ class _DataChartState extends State<_DataChart> {
       LineChartData(
         minY: 0,
         maxY: 30,
-        minX:_emgChannels[0].first.x,
+        minX: _emgChannels[0].first.x,
         maxX: _emgChannels[0].last.x,
         lineTouchData: LineTouchData(enabled: false),
         clipData: FlClipData.all(),
