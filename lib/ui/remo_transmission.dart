@@ -187,8 +187,8 @@ class _DataChartState extends State<_DataChart> {
     return LineChart(
       LineChartData(
         minY: 0,
-        maxY: 20,
-        minX: _emgChannels[0].first.x,
+        maxY: 30,
+        minX:_emgChannels[0].first.x,
         maxX: _emgChannels[0].last.x,
         lineTouchData: LineTouchData(enabled: false),
         clipData: FlClipData.all(),
@@ -235,13 +235,17 @@ class _DataChartState extends State<_DataChart> {
     super.initState();
     // Creating file handle.
     String path = tmpDirectory.path;
-    jsonFile = File('$path/$tmpFileName.json');
+
     csvFile = File('$path/$tmpFileName.csv');
-    // Overwriting an empty string to make sure the JSON file has no content.
-    jsonFile.writeAsString('{"sensorsData":[\n');//json object with List<remoData> in sensorData
     // Overwriting a header as string to make sure the csv file only contains the header itself.
     csvFile.writeAsString(
-        'EMG,,,,,,,,Acceleration,,,AngularVelocity,,,MagneticField,,\nCh1,Ch2,Ch3,Ch4,Ch5,Ch6,Ch7,Ch8,X,Y,Z,X,Y,Z,X,Y,Z\n');
+        'Ch1,Ch2,Ch3,Ch4,Ch5,Ch6,Ch7,Ch8,acX,acY,acZ,avX,avY,avZ,mX,mY,mZ\n'.toString(),mode: FileMode.append);
+
+    jsonFile = File('$path/$tmpFileName.json');
+    // Overwriting an empty string to make sure the JSON file has no content.
+    jsonFile.writeAsString('');
+
+
 
     // Listening to Remo.
     remoStreamSubscription = remoDataStream.listen(
@@ -259,7 +263,7 @@ class _DataChartState extends State<_DataChart> {
 
             // Appending received Remo data to the JSON file.
             jsonFile.writeAsString(
-              remoData.toJson().toString()+",\n",
+              remoData.toJson().toString()+"\n",
               mode: FileMode.append,
             );
 
@@ -294,7 +298,7 @@ class _DataChartState extends State<_DataChart> {
   });
 
   double xvalue = 0;
-  double step = 0.05;
+  double step = 0.1;
 
   // Number of samples to keep in the graph;
   static const int _windowSize = 100;
@@ -398,11 +402,7 @@ class _SaveState extends State<_SavePrompt> {
 
                 File tmpJsonFile = File(tmpFilePath + '.json');
                 File tmpCsvFile = File(tmpFilePath + '.csv');
-                ///string to end file
-                tmpJsonFile.writeAsString(
-                  '{"emg": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],"acceleration": [0.0,0.0,0.0],"angularVelocity": [0.0,0.0,0.0],"magneticField": [0.0,0.0,0.0]}]}',
-                  mode: FileMode.append,
-                );
+
                 await tmpJsonFile.delete();
                 await tmpCsvFile.delete();
 
