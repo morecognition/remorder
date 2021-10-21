@@ -239,7 +239,7 @@ class _DataChartState extends State<_DataChart> {
     csvFile = File('$path/$tmpFileName.csv');
     // Overwriting a header as string to make sure the csv file only contains the header itself.
     csvFile.writeAsString(
-        'Ch1,Ch2,Ch3,Ch4,Ch5,Ch6,Ch7,Ch8,acX,acY,acZ,avX,avY,avZ,mX,mY,mZ\n'.toString(),mode: FileMode.append);
+        'Ch1,Ch2,Ch3,Ch4,Ch5,Ch6,Ch7,Ch8,acX,acY,acZ,avX,avY,avZ,mX,mY,mZ\n'.toString(),mode: FileMode.write);
 
     jsonFile = File('$path/$tmpFileName.json');
     // Overwriting an empty string to make sure the JSON file has no content.
